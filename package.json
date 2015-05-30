@@ -1,0 +1,11 @@
+{
+  "name": "speakerqueue",
+  "version": "1.0.0",
+  "description": "Provides a queue for music that can be edited in real time ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Richie Casto",
+  "license": "ISC"
+}
