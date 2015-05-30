@@ -4,8 +4,12 @@
   "description": "Provides a queue for music that can be edited in real time ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/start.js"
   },
   "author": "Richie Casto",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.4"
+  }
 }
