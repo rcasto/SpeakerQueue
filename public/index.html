@@ -2,12 +2,24 @@
 <html>
 <head>
 	<title>Speaker Queue</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="styles/styles.css">
 </head>
-<body>
-	<h2>Hey there, it's speaker queue, coming soon...</h2>
+<body ng-app="speakerQueue" class="text-center">
+
+	<h2>Speaker Queue</h2>
+
+	<div ng-view class="container"></div>
+
+	<script type="text/javascript", src="angular/angular.js"></script>
+	<script type="text/javascript", src="angular-route/angular-route.min.js"></script>
 
 	<script type="text/javascript", src="//connect.soundcloud.com/sdk.js"></script>
 
 	<script type="text/javascript", src="scripts/app.js"></script>
+	<script type="text/javascript", src="scripts/controllers/queueController.js"></script>
+	<script type="text/javascript", src="scripts/controllers/searchController.js"></script>
+
 </body>
 </html>
