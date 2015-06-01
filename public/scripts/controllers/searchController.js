@@ -21,6 +21,8 @@
 			soundcloudService.search(query).then(function (tracks) {
 				self.results = tracks;
 			});
+		} else {
+			self.results = null;
 		}
 	};
 	

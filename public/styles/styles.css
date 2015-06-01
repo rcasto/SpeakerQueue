@@ -5,3 +5,7 @@
 body {
 	background-color: #69E330;
 }
+
+.search-results {
+	background-color: green;
+}
