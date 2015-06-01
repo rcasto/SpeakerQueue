@@ -1,5 +1,13 @@
 <div class="row" ng-controller="searchController as search">
 	
-	<input type="text" ng-model="search.query"  placeholder="What do you want to listen to?" ng-keydown="$event.keyCode === 13 && search.findTrack(search.query)" class="col-md-8 col-xs-12 center-block" />
+	<input type="text" ng-model="search.query"  placeholder="What do you want to listen to?" 
+	ng-keydown="$event.keyCode === 13 && search.relatedTracks(search.query)" ng-change="search.relatedTracks(search.query)" 
+		class="col-md-8 col-xs-12 center-block" />
+
+	<div ng-if="search.results" class="search-results">
+		<div ng-repeat="result in search.results" ng-click="search.selectTrack(result)">
+			Result
+		</div>
+	</div>
 
 </div>

@@ -8,12 +8,4 @@
 		})
 	});
 
-	speakerQueue.run(function () {
-
-		SC.initialize({
-			client_id: "9cb398fe220f1bef54d28cc3f4a8a06a"
-		});
-
-	});
-
 }());
