@@ -5,7 +5,7 @@
 		class="col-md-8 col-xs-12 center-block" />
 
 	<div ng-if="search.results" class="search-results col-md-8 col-xs-12 center-block">
-		<div ng-repeat="result in search.results" ng-click="search.selectTrack(result)" class="clearfix">
+		<div ng-repeat="result in search.results" ng-click="search.selectTrack(result)" class="search-result clearfix">
 			<img ng-src="{{ result.artwork_url }}" class="pull-left">
 			<div class="pull-right">
 				<p>{{ result.title }}</p>

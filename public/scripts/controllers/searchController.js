@@ -2,18 +2,26 @@
 
 	var speakerQueue = angular.module('speakerQueue');
 
-	var soundcloudService, self;
+	var soundcloudService, queueService, self;
 
-	function searchController(_soundcloudService_) {
+	function searchController(_soundcloudService_, _queueService_) {
 		self = this;
 		soundcloudService = _soundcloudService_;
+		queueService = _queueService_;
 
 		this.query = "";
 		this.results = null;
 	}
 
-	searchController.prototype.selectTrack = function (query) {
-		// this must update the server and other clients in real time
+	searchController.prototype.selectTrack = function (track) {
+		queueService.addTrack(track).then(function (data) {
+			console.dir(data);
+			console.log("Track successfully added");
+		}, function () {
+			console.error("failed to add track to queue");
+		});
+		// clear search results
+		this.results = null;
 	};
 
 	searchController.prototype.relatedTracks = function (query) {
