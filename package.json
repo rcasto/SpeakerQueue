@@ -23,5 +23,8 @@
   "devDependencies": {
     "node-gyp": "^2.0.1",
     "node-inspector": "^0.10.1"
+  },
+  "optionalDependencies": {
+    "serialport": "^1.7.4"
   }
 }
