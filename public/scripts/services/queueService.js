@@ -3,16 +3,19 @@
 	var speakerQueue = angular.module('speakerQueue');
 
 	var $q, $http;
+    var socketService;
 
-	function queueService(_$http_, _$q_) {
+	function queueService(_$http_, _$q_, _socketService_) {
 		$http = _$http_;
 		$q = _$q_;
+        socketService = _socketService_;
 	}
 
 	queueService.prototype.addTrack = function (track) {
 		var deferred = $q.defer();
 		$http.post('/api/queue', track).then(function (data) {
 			deferred.resolve(data);
+            socketService.emit('add-song');
 		}, function (error) {
 			deferred.reject(error);
 		});

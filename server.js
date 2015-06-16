@@ -1,10 +1,14 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var socketIO = require('socket.io');
+var http = require('http');
 
 var api = require('./lib/api');
 
 var app = express();
+var server = http.Server(app);
+var io = socketIO(server);
 
 app.use(bodyParser.json());
 
@@ -17,4 +21,7 @@ app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-module.exports = app;
+module.exports = {
+    server: server,
+    io: io
+};
