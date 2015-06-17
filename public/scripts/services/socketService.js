@@ -1,26 +1,26 @@
 (function () {
-
 	var speakerQueue = angular.module('speakerQueue');
 
-     var socket = io.connect('http://localhost:3000');
-
 	function socketService() {
+        this.socket = io.connect('http://localhost:3000');
         this.events = ['add-song', 'remove-song', 'pause', 'play'];
 	}
 
     socketService.prototype.isValidEvent = function (event) {
-        this.events.map(function (val, i, arr) {
-            if (val === event) {
-                return true;
-            }
+        return this.events.some(function (val, i, arr) {
+            return val === event;
         });
-        return false;
     };
 
     socketService.prototype.emit = function (event) {
         if (this.isValidEvent(event)) {
-            socket.emit(event);
+            this.socket.emit(event);
         }
+    };
+
+    socketService.prototype.on = function (event, cb) {
+        this.events.push(event);
+        this.socket.on(event, cb);
     };
 
 	speakerQueue.service('socketService', socketService);

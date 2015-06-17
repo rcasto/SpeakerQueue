@@ -15,7 +15,9 @@
 		var deferred = $q.defer();
 		$http.post('/api/queue', track).then(function (data) {
 			deferred.resolve(data);
-            socketService.emit('add-song');
+            if (data && data.data && data.data.inQueue) {
+                socketService.emit('add-song');
+            }
 		}, function (error) {
 			deferred.reject(error);
 		});

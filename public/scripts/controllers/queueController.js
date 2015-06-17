@@ -2,10 +2,10 @@
 
 	var speakerQueue = angular.module('speakerQueue');
 
-	var $http
+	var $http, queueService;
 
-	function queueController() {
-
+	function queueController(_queueService_) {
+        queueService = _queueService_;
 	}
 
 	speakerQueue.controller('queueController', queueController);

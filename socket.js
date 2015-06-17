@@ -5,5 +5,8 @@ var http = require('http');
 module.exports = function (app) {
     var server = http.Server(app);
     var io = socketIO(server);
-    return io;
+    return {
+        server: server,
+        io: io
+    };
 };
