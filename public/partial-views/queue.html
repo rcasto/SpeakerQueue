@@ -1,7 +1,16 @@
 <div ng-controller="queueController as queue">
 	
-	<p>
+	<p ng-if="queue.queue.length === 0">
 		No songs in the queue right now mate.  Go ahead and add a song using that box above
 	</p>
+
+    <!-- May be useful to create directive to display tracks -->
+    <div ng-repeat="track in queue.queue track by track.id" class="clearfix">
+        <img ng-src="{{ track.artwork_url }}" class="pull-left">
+        <div class="pull-right">
+            <p>{{ track.title }}</p>
+            <p>{{ track.artist }}</p>
+        </div>
+    </div>
 
 </div>

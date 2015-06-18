@@ -24,6 +24,16 @@
 		return deferred.promise;
 	};
 
+    queueService.prototype.getQueue = function () {
+        var deferred = $q.defer();
+        $http.get('/api/queue/').then(function (data) {
+            deferred.resolve(data.data);
+        }, function (error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
 	speakerQueue.service('queueService', queueService);
 
 }());
