@@ -2,14 +2,15 @@
 
 	var speakerQueue = angular.module('speakerQueue');
 
-	var $http, queueService, self;
+	var $scope;
+    var queueService, self;
 
-	function queueController(_queueService_) {
+	function queueController(_queueService_, _$scope_) {
+        $scope = _$scope_;
         queueService = _queueService_;
         self = this;
 
-        this.queue = [];
-
+        attachEvents($scope);
         this.updateQueue();
 	}
 
@@ -20,6 +21,14 @@
             console.error(error);
         });
     };
+
+    function attachEvents(scope) {
+
+        scope.$on('TrackAdded', function (event, track) {
+            self.updateQueue();
+        });
+
+    }
 
 	speakerQueue.controller('queueController', queueController);
 
