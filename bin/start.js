@@ -19,5 +19,7 @@ io.on('connection', function (socket) {
 
     socket.on('add-song', function (data) {
         console.log('Got the song');
+        // Notify other clients
+        io.to('speakerQueue').emit('add-song');
     });
 });

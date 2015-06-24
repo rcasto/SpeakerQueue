@@ -3,32 +3,24 @@
 	var speakerQueue = angular.module('speakerQueue');
 
 	var $scope;
-    var queueService, self;
+    var queueService, socketService;
 
-	function queueController(_queueService_, _$scope_) {
+	function queueController(_queueService_, _socketService_, _$scope_) {
         $scope = _$scope_;
         queueService = _queueService_;
-        self = this;
+        socketService = _socketService_;
 
-        attachEvents($scope);
         this.updateQueue();
+        socketService.on('add-song', this.updateQueue);
 	}
 
     queueController.prototype.updateQueue = function () {
-        queueService.getQueue().then(function (data) {
-            self.queue = data;
+        queueService.getQueue().then(data => {
+            this.queue = data;
         }, function (error) {
             console.error(error);
         });
     };
-
-    function attachEvents(scope) {
-
-        scope.$on('TrackAdded', function (event, track) {
-            self.updateQueue();
-        });
-
-    }
 
 	speakerQueue.controller('queueController', queueController);
 

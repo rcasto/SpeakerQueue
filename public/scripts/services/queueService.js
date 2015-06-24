@@ -5,6 +5,8 @@
 	var $q, $http, $rootScope;
     var socketService;
 
+    var queue;
+
 	function queueService(_$http_, _$q_, _$rootScope_, _socketService_) {
 		$http = _$http_;
 		$q = _$q_;
@@ -21,8 +23,7 @@
                 deferred.resolve(response.data);
             }
             if (response.data.inQueue) {
-                socketService.emit('add-song');
-                $rootScope.$broadcast('TrackAdded', response.data.trackInfo);
+                socketService.emit('add-song', response.data.trackInfo);
             }
 		}, function (error) {
 			deferred.reject(error);
@@ -33,11 +34,21 @@
     queueService.prototype.getQueue = function () {
         var deferred = $q.defer();
         $http.get('/api/queue/').then(function (data) {
+            queue = data.data;
             deferred.resolve(data.data);
         }, function (error) {
             deferred.reject(error);
         });
         return deferred.promise;
+    };
+
+    queueService.prototype.isInQueue = function (track) {
+        if (queue) {
+            return queue.some(function (val, i, arr) {
+                return track.id === val.id;
+            });
+        }
+        return false;
     };
 
 	speakerQueue.service('queueService', queueService);
