@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node-debug bin/start.js",
-    "start": "node bin/start.js",
+    "start": "gulp minify && node bin/start.js",
     "clean": "rm -rf node_modules"
   },
   "author": "Richie Casto",
@@ -22,6 +22,9 @@
     "speaker": "^0.2.5"
   },
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.2.0",
     "node-gyp": "^2.0.1",
     "node-inspector": "^0.10.1"
   }

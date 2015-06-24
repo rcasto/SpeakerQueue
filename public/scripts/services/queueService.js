@@ -2,15 +2,14 @@
 
 	var speakerQueue = angular.module('speakerQueue');
 
-	var $q, $http, $rootScope;
+	var $q, $http;
     var socketService;
 
     var queue;
 
-	function queueService(_$http_, _$q_, _$rootScope_, _socketService_) {
+	function queueService(_$http_, _$q_, _socketService_) {
 		$http = _$http_;
 		$q = _$q_;
-        $rootScope = _$rootScope_;
         socketService = _socketService_;
 	}
 
@@ -51,6 +50,6 @@
         return false;
     };
 
-	speakerQueue.service('queueService', queueService);
+	speakerQueue.service('queueService', ['$http', '$q', 'socketService', queueService]);
 
 }());

@@ -24,6 +24,6 @@
 		return deferred.promise;
 	};
 
-	speakerQueue.service('soundcloudService', soundcloudService);
+	speakerQueue.service('soundcloudService', ['$http', '$q', soundcloudService]);
 
 }());

@@ -1,11 +1,7 @@
 (function () {
 	var speakerQueue = angular.module('speakerQueue');
 
-    var $rootScope;
-
-	function socketService(_$rootScope_) {
-        $rootScope = _$rootScope_;
-
+	function socketService() {
         this.socket = io.connect('http://192.168.1.113:3000');
         this.events = ['add-song', 'remove-song', 'pause', 'play'];
 	}
@@ -29,6 +25,6 @@
         });
     };
 
-	speakerQueue.service('socketService', socketService);
+	speakerQueue.service('socketService', [socketService]);
 
 }());

@@ -2,10 +2,10 @@
 
 	var speakerQueue = angular.module('speakerQueue', ['ngRoute']);
 
-	speakerQueue.config(function ($routeProvider) {
+	speakerQueue.config(['$routeProvider', function ($routeProvider) {
 		$routeProvider.when('/', {
 			templateUrl: 'views/home.html'
 		})
-	});
+	}]);
 
 }());
