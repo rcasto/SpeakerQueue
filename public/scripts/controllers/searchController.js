@@ -14,9 +14,9 @@
 	}
 
 	searchController.prototype.selectTrack = function (track) {
-        if (queueService.isInQueue(track)) {
-            return;
-        }
+//        if (queueService.isInQueue(track)) {
+//            return;
+//        }
 		queueService.addTrack(track).then(function (track) {
             console.log('Track ' + track.title + ' added.');
 		}, function () {
