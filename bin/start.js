@@ -1,5 +1,7 @@
 var app = require('../app');
 
+console.log(JSON.stringify(app));
+
 var server = app.server;
 var io = app.io;
 
