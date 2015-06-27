@@ -1,25 +1,25 @@
-var Server = require('../server');
-var SocketIO = require('../socket')(Server);
+var app = require('../app');
 
-var server = SocketIO.server;
-var io = SocketIO.io;
+var server = app.server;
+var io = app.io;
 
 var port = process.env.PORT || 3000;
 
+function onDisconnect() {
+    console.log('Client has disconnected');
+}
+
 server.listen(port, function () {
-	console.log("Server started on port: " + port);
+	console.log('Server started on port: ' + port);
 });
 
 // This is fired whenever a connection is made
 io.on('connection', function (socket) {
     console.log('Client Connected!');
 
-    // join a room
+    // join message room
     socket.join('speakerQueue');
 
-    socket.on('add-song', function (data) {
-        console.log('Got the song');
-        // Notify other clients
-        io.to('speakerQueue').emit('add-song');
-    });
+    // register clean up event
+    socket.on('disconnect', onDisconnect);
 });

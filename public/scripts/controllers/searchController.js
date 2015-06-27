@@ -17,9 +17,8 @@
         if (queueService.isInQueue(track)) {
             return;
         }
-		queueService.addTrack(track).then(function (data) {
-			console.dir(data);
-			console.log("Track successfully added");
+		queueService.addTrack(track).then(function (track) {
+            console.log('Track ' + track.title + ' added.');
 		}, function () {
 			console.error("failed to add track to queue");
 		});

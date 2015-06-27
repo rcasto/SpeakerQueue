@@ -8,19 +8,20 @@
 	function queueController(_queueService_, _socketService_) {
         queueService = _queueService_;
         socketService = _socketService_;
-
         self = this;
 
-        this.updateQueue();
-        socketService.on('add-song', this.updateQueue);
+        this.queue = queueService.getQueue();
+
+        socketService.on('add-song', this.addTrack);
+        socketService.on('remove-song', this.removeTrack);
 	}
 
-    queueController.prototype.updateQueue = function () {
-        queueService.getQueue().then(function (data) {
-            self.queue = data;
-        }, function (error) {
-            console.error(error);
-        });
+    queueController.prototype.addTrack = function (track) {
+        console.log('Message: ' + track.title + ' added.');
+    };
+
+    queueController.prototype.removeTrack = function (track) {
+        console.log('Message: ' + track.title + ' removed.');
     };
 
 	speakerQueue.controller('queueController', ['queueService', 'socketService',  queueController]);

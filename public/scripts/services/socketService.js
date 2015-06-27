@@ -1,8 +1,11 @@
 (function () {
 	var speakerQueue = angular.module('speakerQueue');
 
+    // May want to abstract out connection string and events, user can register them with service or pass in default events
 	function socketService() {
-        this.socket = io.connect('http://192.168.1.113:3000');
+        // This is static for now will need to figure out how to make this dynamic
+        // May need to pass up from server
+        this.socket = io.connect('http://192.168.1.120:3000');
         this.events = ['add-song', 'remove-song', 'pause', 'play'];
 	}
 

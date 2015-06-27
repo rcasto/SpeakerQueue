@@ -1,16 +1,19 @@
 (function () {
 
+    /*
+        New model is that the client will only grab the queue once and only once upon initial load.  The queue will be cached then.
+        Will need an expiration on refreshing the queue from the server.
+
+        It will be updated upon messages from the server as to when a client has added a track and when a track has ended on the server
+    */
+
 	var speakerQueue = angular.module('speakerQueue');
 
 	var $q, $http;
-    var socketService;
 
-    var queue;
-
-	function queueService(_$http_, _$q_, _socketService_) {
+	function queueService(_$http_, _$q_) {
 		$http = _$http_;
 		$q = _$q_;
-        socketService = _socketService_;
 	}
 
 	queueService.prototype.addTrack = function (track) {
@@ -21,9 +24,6 @@
             } else {
                 deferred.resolve(response.data);
             }
-            if (response.data.inQueue) {
-                socketService.emit('add-song', response.data.trackInfo);
-            }
 		}, function (error) {
 			deferred.reject(error);
 		});
@@ -32,8 +32,8 @@
 
     queueService.prototype.getQueue = function () {
         var deferred = $q.defer();
+        // TODO: make sure this request gets cached.
         $http.get('/api/queue/').then(function (data) {
-            queue = data.data;
             deferred.resolve(data.data);
         }, function (error) {
             deferred.reject(error);
@@ -50,6 +50,6 @@
         return false;
     };
 
-	speakerQueue.service('queueService', ['$http', '$q', 'socketService', queueService]);
+	speakerQueue.service('queueService', ['$http', '$q', queueService]);
 
 }());
