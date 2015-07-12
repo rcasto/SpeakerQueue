@@ -2,40 +2,31 @@
 
 	var speakerQueue = angular.module('speakerQueue');
 
-	var soundcloudService, queueService, self;
+	var soundcloudService, socketService;
 
-	function searchController(_soundcloudService_, _queueService_) {
-		self = this;
+	function searchController(_soundcloudService_, _socketService_) {
 		soundcloudService = _soundcloudService_;
-		queueService = _queueService_;
+        socketService = _socketService_;
 
 		this.query = "";
 		this.results = null;
 	}
 
 	searchController.prototype.selectTrack = function (track) {
-//        if (queueService.isInQueue(track)) {
-//            return;
-//        }
-		queueService.addTrack(track).then(function (track) {
-            console.log('Track ' + track.title + ' added.');
-		}, function () {
-			console.error("failed to add track to queue");
-		});
-		// clear search results
+        socketService.emit('add-song', track);
 		this.results = null;
 	};
 
 	searchController.prototype.relatedTracks = function (query) {
 		if (query) {
 			soundcloudService.search(query).then(function (tracks) {
-				self.results = tracks;
-			});
+				this.results = tracks;
+			}.bind(this));
 		} else {
-			self.results = null;
+			this.results = null;
 		}
 	};
 	
-	speakerQueue.controller('searchController', ['soundcloudService', 'queueService', searchController]);
+	speakerQueue.controller('searchController', ['soundcloudService', 'socketService', searchController]);
 
 }());

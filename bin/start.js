@@ -1,7 +1,5 @@
 var app = require('../app');
 
-console.log(JSON.stringify(app));
-
 var server = app.server;
 var io = app.io;
 
@@ -22,6 +20,6 @@ io.on('connection', function (socket) {
     // join message room
     socket.join('speakerQueue');
 
-    // register clean up event
+    // register events
     socket.on('disconnect', onDisconnect);
 });

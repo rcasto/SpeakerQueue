@@ -1,29 +1,31 @@
 (function () {
-
+    // TODO: add 'use strict' to every client side file (does it work on the server side?)
 	var speakerQueue = angular.module('speakerQueue');
 
-    var queueService, socketService;
-    var self;
+    var socketService;
 
-	function queueController(_queueService_, _socketService_) {
-        queueService = _queueService_;
+	function queueController(_socketService_) {
         socketService = _socketService_;
-        self = this;
 
-        this.queue = queueService.getQueue();
+        this.queue = [];
 
-        socketService.on('add-song', this.addTrack);
-        socketService.on('remove-song', this.removeTrack);
+        socketService.on('queue-state', this.updateQueue.bind(this));
+        socketService.on('add-song', this.addTrack.bind(this));
+        socketService.on('remove-song', this.removeTrack.bind(this));
 	}
 
     queueController.prototype.addTrack = function (track) {
-        console.log('Message: ' + track.title + ' added.');
+        this.queue.push(track);
     };
 
     queueController.prototype.removeTrack = function (track) {
         console.log('Message: ' + track.title + ' removed.');
     };
 
-	speakerQueue.controller('queueController', ['queueService', 'socketService',  queueController]);
+    queueController.prototype.updateQueue = function (tracks) {
+        this.queue = tracks;
+    };
+
+	speakerQueue.controller('queueController', ['socketService',  queueController]);
 
 }());
