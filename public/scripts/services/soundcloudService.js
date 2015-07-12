@@ -8,6 +8,7 @@
 		$http = _$http_;
 		$q = _$q_;
 
+        // Could add client config route, so this setting could reside hidden behind server
 		SC.initialize({
 			client_id: "9cb398fe220f1bef54d28cc3f4a8a06a"
 		});
