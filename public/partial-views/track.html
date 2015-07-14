@@ -1,5 +1,5 @@
 <div ng-if="trackr.tracks">
-    <div class="clearfix" ng-repeat="track in trackr.tracks track by track.id" ng-click="trackr.trackAction(track)">
+    <div class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-repeat="track in trackr.tracks track by track.id" ng-click="trackr.trackAction(track)">
         <img ng-src="{{ track.artwork_url }}" class="pull-left">
         <div class="pull-right">
             <p>{{ track.title }}</p>
