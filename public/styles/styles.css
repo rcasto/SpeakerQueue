@@ -9,7 +9,11 @@ body {
 .search-results {
 	background-color: green;
 }
-
 .search-result:hover {
 	background-color: orange;
+}
+
+.player {
+    position: fixed;
+    bottom: 0;
 }

@@ -9,7 +9,9 @@
 
         this.queue = [];
 
-        socketService.on('queue-state', this.updateQueue.bind(this));
+        socketService.on('queue-state', function (queueInfo) {
+            this.updateQueue(queueInfo.tracks);
+        }.bind(this));
         socketService.on('add-song', this.addTrack.bind(this));
         socketService.on('remove-song', this.removeTrack.bind(this));
 	}
@@ -19,7 +21,7 @@
     };
 
     queueController.prototype.removeTrack = function (track) {
-        console.log('Message: ' + track.title + ' removed.');
+        this.queue.splice(this.queue.indexOf(track), 1);
     };
 
     queueController.prototype.updateQueue = function (tracks) {

@@ -5,13 +5,7 @@
 		class="col-md-8 col-xs-12 center-block" />
 
 	<div ng-if="search.results" class="search-results col-md-8 col-xs-12 center-block">
-		<div ng-repeat="result in search.results track by result.id" ng-click="search.selectTrack(result)" class="search-result clearfix">
-			<img ng-src="{{ result.artwork_url }}" class="pull-left">
-			<div class="pull-right">
-				<p>{{ result.title }}</p>
-				<p>{{ result.user.username }}</p>
-			</div>
-		</div>
+		<speaker-track data-tracks="search.results" data-track-action="search.selectTrack" data-track-action-context="search"></speaker-track>
 	</div>
 
 </div>
