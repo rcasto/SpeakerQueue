@@ -1,4 +1,6 @@
 (function () {
+    // There might be an issue where socket.io does not allow multiple event handlers for an event message
+
     // TODO: add 'use strict' to every client side file (does it work on the server side?)
 	var speakerQueue = angular.module('speakerQueue');
 

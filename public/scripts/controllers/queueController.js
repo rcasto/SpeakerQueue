@@ -21,7 +21,11 @@
     };
 
     queueController.prototype.removeTrack = function (track) {
-        this.queue.splice(this.queue.indexOf(track), 1);
+        for (var i = 0; i < this.queue.length; i++) {
+            if (track.id === this.queue[i].id) {
+                this.queue.splice(i, 1);
+            }
+        }
     };
 
     queueController.prototype.updateQueue = function (tracks) {

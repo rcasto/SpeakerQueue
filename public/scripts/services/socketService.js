@@ -53,13 +53,22 @@
         });
     };
 
+    socketService.prototype.getEventInfo = function (eventName) {
+        for (var i = 0; i < this.events.length; i++) {
+            if (this.events[i].event === eventName) {
+                return this.events[i];
+            }
+        }
+        return null;
+    };
+
     socketService.prototype.registerEvents = function () {
+        var self = this;
         this.events.filter(function (val, i, arr) {
             return !val.registered;
         }).map(function (val, i, arr) {
-            val.registered = true;
-            this.on(val.event, val.cb);
-        }.bind(this));
+            self.registerEvent(val.event);
+        });
     };
 
     socketService.prototype.emit = function (event, data) {
@@ -69,24 +78,48 @@
     };
 
     socketService.prototype.on = function (event, cb) {
-        var eventEntry = {
-            'event': event,
-            'cb': cb,
-            'registered': false
-        };
-        if (this.isConnected()) {
-            eventEntry.registered = true;
-            this.socket.on(event, function (data) {
-                cb(data);
-                $rootScope.$apply();
-            });
-            return true;
-        }
-        if (!this.isValidEvent(event)) {
+        var eventEntry = this.getEventInfo(event);
+
+        if (eventEntry) {
+            eventEntry.callbacks.push(cb);
+        } else {
+            eventEntry = {
+                'event': event,
+                'callbacks': [cb],
+                'registered': false
+            };
             this.events.push(eventEntry);
         }
+
+        if (this.isConnected()) {
+            this.registerEvent(event);
+            return true;
+        }
+
         return false;
     };
+
+    socketService.prototype.registerEvent = function (eventName) {
+        var eventEntry = this.getEventInfo(eventName);
+        if (!eventEntry) {
+            eventEntry = {
+                'event': eventName,
+                'callbacks': [],
+                'registered': false
+            };
+            this.events.push(eventEntry);
+        }
+        if (eventEntry.registered || eventEntry.callbacks.length === 0) {
+            return;
+        }
+        this.socket.on(eventName, function (data) {
+            eventEntry.callbacks.forEach(function (callback) {
+                callback(data);
+            });
+            $rootScope.$apply();
+        });
+        eventEntry.registered = true;
+    }
 
 	speakerQueue.service('socketService', ['$http', '$q', '$rootScope', socketService]);
 
