@@ -1,0 +1,3 @@
+Speaker Rooms, ability to have different queue for each room and select which is source of sound currently.
+
+Need to develop server app/api (sound source on client)

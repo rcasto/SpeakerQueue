@@ -1,25 +1,32 @@
-var app = require('../app');
+/* global require */
+/* global process */
+(function () {
+    "use strict";
 
-var server = app.server;
-var io = app.io;
+    var app = require('../app');
 
-var port = process.env.PORT || 3000;
+    var server = app.server;
+    var io = app.io;
 
-function onDisconnect() {
-    console.log('Client has disconnected');
-}
+    var port = process.env.PORT || 3000;
 
-server.listen(port, function () {
-	console.log('Server started on port: ' + port);
-});
+    function onDisconnect() {
+        console.log('Client has disconnected');
+    }
 
-// This is fired whenever a connection is made
-io.on('connection', function (socket) {
-    console.log('Client Connected!');
+    server.listen(port, function () {
+        console.log('Server started on port: ' + port);
+    });
 
-    // join message room
-    socket.join('speakerQueue');
+    // This is fired whenever a connection is made
+    io.on('connection', function (socket) {
+        console.log('Client Connected!');
 
-    // register events
-    socket.on('disconnect', onDisconnect);
-});
+        // join message room
+        socket.join('speakerQueue');
+
+        // register events
+        socket.on('disconnect', onDisconnect);
+    });
+
+}());

@@ -1,3 +1,7 @@
+/* global require */
+/* global __dirname */
+/* global module */
+
 var express = require('express');
 var path = require('path');
 var http = require('http');
@@ -19,7 +23,10 @@ app.get('/', function (req, res) {
 var server = http.Server(app);
 var io = socketIO(server);
 
-var api = require('./lib/api')(io);
+var api = require('./lib/api');
+
+// bring in the player and its dependencies
+require('./lib/player')(io);
 
 // setup other routes
 app.use('/api', api);

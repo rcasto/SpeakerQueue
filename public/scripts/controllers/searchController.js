@@ -1,4 +1,7 @@
 (function () {
+    /* global angular*/
+
+    "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
 
@@ -8,6 +11,7 @@
 		soundcloudService = _soundcloudService_;
         socketService = _socketService_;
 
+        /* jshint validthis:true */
 		this.query = "";
 		this.results = null;
 	}

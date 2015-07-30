@@ -1,9 +1,23 @@
-.center-block {
-	float: none;
+html, body {
+    font-family: 'Jura', sans-serif;
 }
 
 body {
 	background-color: #69E330;
+}
+
+.center-block {
+	float: none;
+}
+
+.main-title {
+    float: left;
+    margin: 0;
+    padding: 6px;
+}
+
+.container {
+    clear: left;
 }
 
 .search-results {
