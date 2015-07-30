@@ -1,3 +1,14 @@
 Speaker Rooms, ability to have different queue for each room and select which is source of sound currently.
 
 Need to develop server app/api (sound source on client)
+--- No this is taken care of by the web audio element, build around this standard
+
+Playing originates on the client, therefore the client needs to be in control of playing the music.
+It is also in charge of notifying (messaging) the server of play information.
+
+Questions:
+Do clients that aren't a room leader have access to the player controls?
+    Should they only have access to the queue and adding/editing, with a view of the player minus the controls?
+    
+Architecture:
+The client retains views of the following
