@@ -1,6 +1,4 @@
 (function () {
-    /* global angular */
-
     "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');

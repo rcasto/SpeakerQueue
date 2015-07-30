@@ -2,36 +2,41 @@
 /* global __dirname */
 /* global module */
 
-var express = require('express');
-var path = require('path');
-var http = require('http');
-var socketIO = require('socket.io');
-var bodyParser = require('body-parser');
+(function () {
+    "use strict";
 
-var app = express();
+    var express = require('express');
+    var path = require('path');
+    var http = require('http');
+    var socketIO = require('socket.io');
+    var bodyParser = require('body-parser');
 
-app.use(bodyParser.json());
+    var app = express();
 
-// setup static routes
-app.use(express.static(path.join(__dirname + '/node_modules')));
-app.use(express.static(path.join(__dirname + '/public')));
+    app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname + '/index.html'));
-});
+    // setup static routes
+    app.use(express.static(path.join(__dirname + '/node_modules')));
+    app.use(express.static(path.join(__dirname + '/public')));
 
-var server = http.Server(app);
-var io = socketIO(server);
+    app.get('/', function (req, res) {
+        res.sendFile(path.join(__dirname + '/index.html'));
+    });
 
-var api = require('./lib/api');
+    var server = http.Server(app);
+    var io = socketIO(server);
 
-// bring in the player and its dependencies
-require('./lib/player')(io);
+    var api = require('./lib/api');
 
-// setup other routes
-app.use('/api', api);
+    // bring in the player and its dependencies
+    require('./lib/player')(io);
 
-module.exports = {
-    server: server,
-    io: io
-};
+    // setup other routes
+    app.use('/api', api);
+
+    module.exports = {
+        server: server,
+        io: io
+    };
+
+}());

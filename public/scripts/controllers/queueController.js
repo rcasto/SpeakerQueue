@@ -1,5 +1,6 @@
 (function () {
-    // TODO: add 'use strict' to every client side file (does it work on the server side?)
+    "use strict";
+
 	var speakerQueue = angular.module('speakerQueue');
 
     var socketService;
@@ -7,6 +8,7 @@
 	function queueController(_socketService_) {
         socketService = _socketService_;
 
+        /* jshint validthis:true */
         this.queue = [];
 
         socketService.on('queue-state', function (queueInfo) {

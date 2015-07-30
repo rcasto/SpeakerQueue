@@ -1,4 +1,5 @@
 (function () {
+    "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
 

@@ -1,5 +1,6 @@
 /* global require */
 /* global process */
+
 (function () {
     "use strict";
 

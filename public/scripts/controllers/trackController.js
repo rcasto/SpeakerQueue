@@ -1,8 +1,10 @@
 (function () {
-    // TODO: add 'use strict' to every client side file (does it work on the server side?)
+    "use strict";
+
 	var speakerQueue = angular.module('speakerQueue');
 
 	function trackController() {
+        /* jshint validthis:true */
         this.tracks = this.tracks || null;
         this.trackAction = this.trackAction || function () { };
         if (this.trackActionContext) {

@@ -1,6 +1,4 @@
 (function () {
-    /* global angular */
-
     "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
@@ -13,6 +11,7 @@
         $q = _$q_;
         $rootScope = _$rootScope_;
 
+        /* jshint validthis:true */
         this.initialize();
 	}
 
@@ -22,7 +21,8 @@
         this.connectionString = null;
     };
 
-    socketService.prototype.initialize = function (events) {
+    // could make this initialize with some events from the get go
+    socketService.prototype.initialize = function () {
         this.reset();
         this.connect();
     };
@@ -52,8 +52,8 @@
     };
 
     socketService.prototype.isValidEvent = function (event) {
-        return this.events.some(function (val, i, arr) {
-            return val.event === event;
+        return this.events.some(function (eventObj) {
+            return eventObj.event === event;
         });
     };
 
@@ -68,10 +68,10 @@
 
     socketService.prototype.registerEvents = function () {
         var self = this;
-        this.events.filter(function (val, i, arr) {
-            return !val.registered;
-        }).map(function (val, i, arr) {
-            self.registerEvent(val.event);
+        this.events.filter(function (eventObj) {
+            return !eventObj.registered;
+        }).map(function (evenObj) {
+            self.registerEvent(evenObj.event);
         });
     };
 
@@ -123,8 +123,7 @@
             $rootScope.$apply();
         });
         eventEntry.registered = true;
-    }
+    };
 
 	speakerQueue.service('socketService', ['$http', '$q', '$rootScope', socketService]);
-
 }());
