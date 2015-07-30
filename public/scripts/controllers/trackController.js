@@ -16,5 +16,4 @@
     }
 
 	speakerQueue.controller('trackController', [trackController]);
-
 }());

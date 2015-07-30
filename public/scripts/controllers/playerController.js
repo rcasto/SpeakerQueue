@@ -27,5 +27,4 @@
     };
 
 	speakerQueue.controller('playerController', ['socketService',  playerController]);
-
 }());

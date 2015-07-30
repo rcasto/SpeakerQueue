@@ -42,5 +42,4 @@
 	}
 
 	speakerQueue.directive('speakerPlayer', [playerDirective]);
-
 }());

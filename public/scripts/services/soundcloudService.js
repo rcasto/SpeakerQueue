@@ -27,5 +27,4 @@
 	};
 
 	speakerQueue.service('soundcloudService', ['$http', '$q', soundcloudService]);
-
 }());

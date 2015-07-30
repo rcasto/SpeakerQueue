@@ -19,5 +19,4 @@
 	}
 
 	speakerQueue.directive('speakerTrack', [trackDirective]);
-
 }());

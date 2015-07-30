@@ -35,5 +35,4 @@
     };
 
 	speakerQueue.controller('queueController', ['socketService',  queueController]);
-
 }());

@@ -5,7 +5,7 @@
 
 	var $q, $http;
 
-	function queueService(_$http_, _$q_) {
+	function playerService(_$http_, _$q_) {
 		$http = _$http_;
 		$q = _$q_;
 
@@ -13,7 +13,7 @@
         this.queue = [];
 	}
 
-    queueService.prototype.addTrack = function (track) {
+    playerService.prototype.addTrack = function (track) {
         if (track) {
             this.queue.push(track);
             return true;
@@ -21,6 +21,5 @@
         return false;
     };
 
-	speakerQueue.service('queueService', ['$http', '$q', queueService]);
-
+	speakerQueue.service('playerService', ['$http', '$q', playerService]);
 }());

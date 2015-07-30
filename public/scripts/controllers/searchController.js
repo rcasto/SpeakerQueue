@@ -30,5 +30,4 @@
 	};
 	
 	speakerQueue.controller('searchController', ['soundcloudService', 'socketService', searchController]);
-
 }());
