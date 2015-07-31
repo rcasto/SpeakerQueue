@@ -41,7 +41,7 @@
         $http.get('/api/connect/').then(function (data) {
             this.connectionString = data.data.connectionString;
             deferred.resolve(this.connectionString);
-        }, function (err) {
+        }.bind(this), function (err) {
             deferred.reject(err);
         });
         return deferred.promise;

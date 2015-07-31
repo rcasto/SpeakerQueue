@@ -10,15 +10,24 @@
 		$q = _$q_;
 
         /* jshint validthis:true */
-        this.queue = [];
+        this.currentTrack = null;
 	}
 
-    playerService.prototype.addTrack = function (track) {
-        if (track) {
-            this.queue.push(track);
-            return true;
-        }
-        return false;
+    playerService.prototype.isPlayingTrack = function () {
+        return !!this.currentTrack;
+    };
+
+    // normalize track object
+    playerService.prototype.getTrackInfo = function (track) {
+        return {
+            id: track.id,
+            title: track.title,
+            description: track.description,
+            stream_url: track.stream_url,
+            artwork_url: track.artwork_url,
+            artist: track.user.username,
+            stream_location: track.stream_location
+        };
     };
 
 	speakerQueue.service('playerService', ['$http', '$q', playerService]);
