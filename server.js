@@ -10,7 +10,7 @@
 (function () {
     "use strict";
 
-    var app = require('../app');
+    var app = require('./app');
 
     var server = app.server;
     var io = app.io;
