@@ -8,4 +8,5 @@
 			templateUrl: 'views/home.html'
 		})
 	}]);
+	
 }());

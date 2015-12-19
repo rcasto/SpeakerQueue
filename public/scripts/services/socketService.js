@@ -4,6 +4,10 @@
 	var speakerQueue = angular.module('speakerQueue');
 
     var $http, $q, $rootScope;
+    
+    /*
+        The data structure and things occuring in here need to looked into again
+    */
 
     // May want to abstract out connection string and events, user can register them with service or pass in default events
 	function socketService(_$http_, _$q_, _$rootScope_) {
@@ -16,6 +20,7 @@
 	}
 
     socketService.prototype.reset = function () {
+        this.initBuffer = [];
         this.events = [];
         this.socket = null;
         this.connectionString = null;
@@ -24,31 +29,45 @@
     // could make this initialize with some events from the get go
     socketService.prototype.initialize = function () {
         this.reset();
-        this.connect();
+        // this.connect().then(function (connectionResult) {
+        //     if (connectionResult) {
+        //         console.log("Connected!");
+        //     } else {
+        //         console.error("Connection failed!");
+        //     }
+        // });
     };
 
     socketService.prototype.connect = function () {
-        this.getConnectionString().then(function (connectionString) {
+        return this.getConnectionString().then(function (connectionString) {
             this.socket = io.connect(connectionString);
             this.registerEvents();
+            return true;
         }.bind(this), function (err) {
             console.error(err);
+            return false;
         });
     };
 
     socketService.prototype.getConnectionString = function () {
-        var deferred = $q.defer();
-        $http.get('/api/connect/').then(function (data) {
-            this.connectionString = data.data.connectionString;
-            deferred.resolve(this.connectionString);
+        if (this.connectionString) {
+            return $q.resolve(this.connectionString)
+        }
+        return $http.get('/api/connect/').then(function (data) {
+            this.connectionString = data && data.data && data.data.connectionString;
+            return this.connectionString;
         }.bind(this), function (err) {
-            deferred.reject(err);
+            console.error(JSON.stringify(err));
+            return null;
         });
-        return deferred.promise;
     };
 
     socketService.prototype.isConnected = function () {
         return !!this.socket;
+    };
+    
+    socketService.prototype.isEventRegistered = function (event) {
+        return this.socket && this.socket.callbacks[event]        
     };
 
     socketService.prototype.isValidEvent = function (event) {
@@ -57,22 +76,13 @@
         });
     };
 
-    socketService.prototype.getEventInfo = function (eventName) {
+    socketService.prototype.getEventInfo = function (event) {
         for (var i = 0; i < this.events.length; i++) {
-            if (this.events[i].event === eventName) {
+            if (this.events[i].event === event) {
                 return this.events[i];
             }
         }
         return null;
-    };
-
-    socketService.prototype.registerEvents = function () {
-        var self = this;
-        this.events.filter(function (eventObj) {
-            return !eventObj.registered;
-        }).map(function (evenObj) {
-            self.registerEvent(evenObj.event);
-        });
     };
 
     socketService.prototype.emit = function (event, data) {
@@ -82,47 +92,13 @@
     };
 
     socketService.prototype.on = function (event, cb) {
-        var eventEntry = this.getEventInfo(event);
-
-        if (eventEntry) {
-            eventEntry.callbacks.push(cb);
-        } else {
-            eventEntry = {
-                'event': event,
-                'callbacks': [cb],
-                'registered': false
-            };
-            this.events.push(eventEntry);
-        }
-
-        if (this.isConnected()) {
-            this.registerEvent(event);
-            return true;
-        }
-
-        return false;
-    };
-
-    socketService.prototype.registerEvent = function (eventName) {
-        var eventEntry = this.getEventInfo(eventName);
-        if (!eventEntry) {
-            eventEntry = {
-                'event': eventName,
-                'callbacks': [],
-                'registered': false
-            };
-            this.events.push(eventEntry);
-        }
-        if (eventEntry.registered || eventEntry.callbacks.length === 0) {
-            return;
-        }
-        this.socket.on(eventName, function (data) {
-            eventEntry.callbacks.forEach(function (callback) {
-                callback(data);
+        if (this.socket) {
+            this.socket.on(eventName, function (data) {
+                $rootScope.$apply(function () {
+                    cb(data);
+                });
             });
-            $rootScope.$apply();
-        });
-        eventEntry.registered = true;
+        }
     };
 
 	speakerQueue.service('socketService', ['$http', '$q', '$rootScope', socketService]);
