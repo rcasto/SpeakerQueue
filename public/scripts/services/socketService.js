@@ -29,13 +29,13 @@
     // could make this initialize with some events from the get go
     socketService.prototype.initialize = function () {
         this.reset();
-        // this.connect().then(function (connectionResult) {
-        //     if (connectionResult) {
-        //         console.log("Connected!");
-        //     } else {
-        //         console.error("Connection failed!");
-        //     }
-        // });
+        this.connect().then(function (connectionResult) {
+            if (connectionResult) {
+                console.log("Connected!");
+            } else {
+                console.error("Connection failed!");
+            }
+        });
     };
 
     socketService.prototype.connect = function () {

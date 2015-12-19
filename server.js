@@ -1,6 +1,12 @@
 /* global require */
 /* global process */
 
+/*
+    This file must remain named server.js or Azure will not know what to use for entry point to start
+    
+    This is what boots up the site and server
+*/
+
 (function () {
     "use strict";
 
