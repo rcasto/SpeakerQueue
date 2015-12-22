@@ -8,13 +8,22 @@
             restrict: 'EA',
             scope: {
                 tracks: '=',
-                trackAction: '=',
-                trackActionContext: '='
+                trackAction: '=?',
+                trackActionContext: '=?'
             },
-            controller: 'trackController',
-            controllerAs: 'trackr',
-            bindToController: true,
-            templateUrl: '/partial-views/track.html'
+            templateUrl: '/partial-views/track.html',
+            link: function (scope) {
+                scope.tracks = scope.tracks || null;
+                scope.trackAction = scope.trackAction || function () { };
+                // Allows user to pass in custom context to track action
+                if (scope.trackActionContext) {
+                    scope.trackAction = scope.trackAction.bind(scope.trackActionContext);
+                }
+                // This covers case where a single track is input
+                if (scope.tracks && !Array.isArray(scope.tracks)) {
+                    scope.tracks = [scope.tracks];
+                }
+            }
         };
 	}
 
