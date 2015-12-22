@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node-debug bin/start.js",
-    "start": "node bin/start.js",
+    "start": "node server.js",
     "clean": "rm -rf node_modules"
   },
   "author": "Richie Casto",

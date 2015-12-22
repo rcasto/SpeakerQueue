@@ -21,7 +21,6 @@
 
     socketService.prototype.reset = function () {
         this.initBuffer = [];
-        this.events = [];
         this.socket = null;
         this.connectionString = null;
     };
@@ -41,7 +40,11 @@
     socketService.prototype.connect = function () {
         return this.getConnectionString().then(function (connectionString) {
             this.socket = io.connect(connectionString);
-            this.registerEvents();
+            // Initialize events registered before connection
+            this.initBuffer.forEach(function (eventInfo) {
+                this.on(eventInfo.event, eventInfo.cb);
+            }.bind(this));
+            this.initBuffer = [];
             return true;
         }.bind(this), function (err) {
             console.error(err);
@@ -70,33 +73,21 @@
         return this.socket && this.socket.callbacks[event]        
     };
 
-    socketService.prototype.isValidEvent = function (event) {
-        return this.events.some(function (eventObj) {
-            return eventObj.event === event;
-        });
-    };
-
-    socketService.prototype.getEventInfo = function (event) {
-        for (var i = 0; i < this.events.length; i++) {
-            if (this.events[i].event === event) {
-                return this.events[i];
-            }
-        }
-        return null;
-    };
-
     socketService.prototype.emit = function (event, data) {
-        if (this.isValidEvent(event)) {
-            this.socket.emit(event, data);
-        }
+        this.socket.emit(event, data);
     };
 
     socketService.prototype.on = function (event, cb) {
         if (this.socket) {
-            this.socket.on(eventName, function (data) {
+            this.socket.on(event, function (data) {
                 $rootScope.$apply(function () {
                     cb(data);
                 });
+            });
+        } else {
+            this.initBuffer.push({
+                'event': event,
+                'cb': cb
             });
         }
     };
