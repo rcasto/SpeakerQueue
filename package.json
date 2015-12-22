@@ -1,10 +1,9 @@
 {
   "name": "speakerqueue",
   "version": "1.0.0",
-  "description": "Provides a queue for music that can be edited in real time ",
-  "main": "index.js",
+  "description": "Provides a queue for music that can be edited in real time",
   "scripts": {
-    "test": "node-debug bin/start.js",
+    "test": "node-debug server.js",
     "start": "node server.js",
     "clean": "rm -rf node_modules"
   },
