@@ -3,16 +3,19 @@
 
 	var speakerQueue = angular.module('speakerQueue');
 
-	function playerDirective() {
+	function playerDirective(socketService) {
         return {
             restrict: 'EA',
             scope: {},
-            controller: 'playerController',
-            controllerAs: 'player',
             templateUrl: '/partial-views/player.html',
             link: function (scope, elem, attrs, ctrl) {
                 var audio = elem.find('audio');
                 var audioElem = audio[0];
+                
+                socketService.on('play-song', function (track) {
+                    console.log('Now playing', track.title, 'by', track.artist);
+                    audioElem.src = track.stream_location;
+                });
 
                 audioElem.src = "http://soundfox.net/audio/02_Maroon_5_-_Payphone_feat_Wiz_Khalifa.mp3";
 
@@ -41,5 +44,5 @@
         };
 	}
 
-	speakerQueue.directive('speakerPlayer', [playerDirective]);
+	speakerQueue.directive('speakerPlayer', ['socketService', playerDirective]);
 }());

@@ -2,12 +2,7 @@
     "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
-
     var $http, $q, $rootScope;
-    
-    /*
-        The data structure and things occuring in here need to looked into again
-    */
 
     // May want to abstract out connection string and events, user can register them with service or pass in default events
 	function socketService(_$http_, _$q_, _$rootScope_) {
@@ -80,6 +75,7 @@
     socketService.prototype.on = function (event, cb) {
         if (this.socket) {
             this.socket.on(event, function (data) {
+                console.log('Client received event: ', event);
                 $rootScope.$apply(function () {
                     cb(data);
                 });
