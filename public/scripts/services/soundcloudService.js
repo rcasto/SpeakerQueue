@@ -7,7 +7,6 @@
 	function soundcloudService(_$q_, config) {
 		$q = _$q_;
 
-        // Could add client config route, so this setting could reside hidden behind server
 		SC.initialize({
 			client_id: config.clientId
 		});

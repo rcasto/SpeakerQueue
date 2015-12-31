@@ -7,8 +7,7 @@
 
 	function queueController(_socketService_) {
         socketService = _socketService_;
-
-        /* jshint validthis:true */
+        
         this.queue = [];
 
         socketService.on('queue-state', function (queueInfo) {

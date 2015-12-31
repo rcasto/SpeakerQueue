@@ -7,18 +7,18 @@
 	<link rel="stylesheet" type="text/css" href="styles/styles.css">
 
     <link href='http://fonts.googleapis.com/css?family=Jura' rel='stylesheet' type='text/css'>
-    
-    <!-- Load Client Configuration -->
-    <script type="text/javascript", src="scripts/util/xhr.js"></script>
-    <script type="text/javascript", src="scripts/configLoader.js"></script>
 </head>
 <body ng-app="speakerQueue" class="text-center">
 	<h2 class="main-title">Speaker Queue</h2>
 
 	<div ng-view class="container"></div>
+    
+    <!-- Load Client Configuration -->
+    <script type="text/javascript", src="scripts/util/xhr.js"></script>
+    <script type="text/javascript", src="scripts/configLoader.js"></script>
 
     <!-- App dependencies -->
-	<script type="text/javascript", src="angular/angular.js"></script>
+	<script type="text/javascript", src="angular/angular.min.js"></script>
 	<script type="text/javascript", src="angular-route/angular-route.min.js"></script>
 	<script type="text/javascript", src="//connect.soundcloud.com/sdk.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
