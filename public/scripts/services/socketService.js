@@ -4,13 +4,11 @@
 	var speakerQueue = angular.module('speakerQueue');
     var $http, $q, $rootScope;
 
-    // May want to abstract out connection string and events, user can register them with service or pass in default events
 	function socketService(_$http_, _$q_, _$rootScope_) {
         $http = _$http_;
         $q = _$q_;
         $rootScope = _$rootScope_;
 
-        /* jshint validthis:true */
         this.initialize();
 	}
 
@@ -19,8 +17,7 @@
         this.socket = null;
         this.connectionString = null;
     };
-
-    // could make this initialize with some events from the get go
+    
     socketService.prototype.initialize = function () {
         this.reset();
         this.connect().then(function (connectionResult) {

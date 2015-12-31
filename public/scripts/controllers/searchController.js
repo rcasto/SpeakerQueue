@@ -8,7 +8,6 @@
 		soundcloudService = _soundcloudService_;
         socketService = _socketService_;
 
-        /* jshint validthis:true */
 		this.query = "";
 		this.results = null;
 	}

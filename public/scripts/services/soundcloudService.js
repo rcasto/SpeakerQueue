@@ -2,16 +2,14 @@
     "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
+	var $q;
 
-	var $q, $http;
-
-	function soundcloudService(_$http_, _$q_) {
-		$http = _$http_;
+	function soundcloudService(_$q_, config) {
 		$q = _$q_;
 
         // Could add client config route, so this setting could reside hidden behind server
 		SC.initialize({
-			client_id: "9cb398fe220f1bef54d28cc3f4a8a06a"
+			client_id: config.clientId
 		});
 	}
 
@@ -26,5 +24,5 @@
 		return deferred.promise;
 	};
 
-	speakerQueue.service('soundcloudService', ['$http', '$q', soundcloudService]);
+	speakerQueue.service('soundcloudService', ['$q', 'config', soundcloudService]);
 }());

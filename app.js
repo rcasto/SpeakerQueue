@@ -16,12 +16,13 @@
     app.use(bodyParser.json());
 
     // setup static routes
-    app.use(express.static(path.join(__dirname + '/node_modules')));
-    app.use(express.static(path.join(__dirname + '/public')));
+    app.use(express.static(path.join(__dirname, '/node_modules')));
+    app.use(express.static(path.join(__dirname, '/public')));
     app.use('/api', api);
 
+    // Main route to load app
     app.get('/', function (req, res) {
-        res.sendFile(path.join(__dirname + '/index.html'));
+        res.sendFile(path.join(__dirname, '/index.html'));
     });
 
     // Setup SocketIO with Express
