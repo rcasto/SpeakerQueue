@@ -12,12 +12,17 @@
                 var audio = elem.find('audio');
                 var audioElem = audio[0];
                 
-                socketService.on('play-song', function (track) {
+                function playSong(track) {
                     console.log('Now playing', track.title, 'by', track.artist);
                     audioElem.src = track.stream_location;
+                }
+                
+                socketService.on('play-song', playSong);
+                socketService.on('queue-state', function (queueInfo) {
+                    if (queueInfo.currentTrack) {
+                        playSong(queueInfo.currentTrack);
+                    } 
                 });
-
-                audioElem.src = "http://soundfox.net/audio/02_Maroon_5_-_Payphone_feat_Wiz_Khalifa.mp3";
 
                 audioElem.addEventListener('playing', function () {
                     console.log('playing playing');

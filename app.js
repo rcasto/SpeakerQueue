@@ -1,7 +1,3 @@
-/* global require */
-/* global __dirname */
-/* global module */
-
 (function () {
     "use strict";
 
@@ -50,30 +46,11 @@
         });
         
         // Apply player message handlers
-        socket.on('add-song', function (track) {
-            track = Player.normalizeTrackObj(track);
-            Player.getTrackLocation(track).then(function (location) {
-                track.stream_location = location;
-                Player.addTrackToQueue(track);
-            }, function (err) {
-                console.error(err);
-            });
-        });
-
-        socket.on('play-song', function (track) {
-            console.log('Playing a track now');
-            
+        socket.on('select-song', function (track) {
             if (!track.stream_location) {
-                Player.getTrackLocation(track).then(function (location) {
-                    track.stream_location = location;
-                    Player.setCurrentTrack(track);
-                    io.to('speakerQueue').emit('play-song', track);
-                }, function (err) {
-                    console.error(err);
-                });
+                Player.getTrackLocation(track).then(songSelected, onError);
             } else {
-                Player.setCurrentTrack(track);
-                io.to('speakerQueue').emit('play-song', track);
+                songSelected(track);
             }
         });
 
@@ -82,6 +59,20 @@
             console.log('Client has disconnected');
         });
     });
+    
+    function songSelected(track) {
+        if (Player.isPlayingTrack()) {
+            Player.addTrackToQueue(track);
+             io.to('speakerQueue').emit('add-song', track);
+        } else {
+            Player.setCurrentTrack(track);
+            io.to('speakerQueue').emit('play-song', track);
+        }
+    }
+    
+    function onError(err) {
+        console.error(JSON.stringify(err));
+    }
 
     module.exports = {
         server: server,

@@ -63,10 +63,6 @@
     socketService.prototype.isConnected = function () {
         return !!this.socket;
     };
-    
-    socketService.prototype.isEventRegistered = function (event) {
-        return this.socket && this.socket.callbacks[event]        
-    };
 
     socketService.prototype.emit = function (event, data) {
         this.socket.emit(event, data);
