@@ -1,9 +1,8 @@
-<div ng-if="tracks">
-    <div class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-repeat="track in tracks track by track.id" ng-click="trackAction(track)">
-        <img ng-src="{{ track.artwork_url }}" class="pull-left">
-        <div class="pull-right">
-            <p>{{ track.title }}</p>
-            <p>{{ track.artist }}</p>
-        </div>
+<div class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" 
+    ng-if="tracks" ng-repeat="track in tracks track by track.id" ng-click="trackAction(track)">
+    <img ng-src="{{ track.artwork_url }}" class="pull-left">
+    <div class="pull-right">
+        <p>{{ track.title }}</p>
+        <p>{{ track.artist }}</p>
     </div>
 </div>

@@ -19,10 +19,6 @@
                 if (scope.trackActionContext) {
                     scope.trackAction = scope.trackAction.bind(scope.trackActionContext);
                 }
-                // This covers case where a single track is input
-                if (scope.tracks && !Array.isArray(scope.tracks)) {
-                    scope.tracks = [scope.tracks];
-                }
             }
         };
 	}

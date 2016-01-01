@@ -6,7 +6,9 @@
 	function playerDirective(socketService) {
         return {
             restrict: 'EA',
-            scope: {},
+            scope: {
+                track: '=?'
+            },
             templateUrl: '/partial-views/player.html',
             link: function (scope, elem, attrs, ctrl) {
                 var audio = elem.find('audio');
@@ -14,6 +16,7 @@
                 
                 function playSong(track) {
                     console.log('Now playing', track.title, 'by', track.artist);
+                    scope.track = track;
                     audioElem.src = track.stream_location;
                 }
                 
