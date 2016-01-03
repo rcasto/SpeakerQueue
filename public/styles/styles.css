@@ -34,3 +34,10 @@ body {
     right: 0;
     width: 100%;
 }
+
+.track {
+}
+.track img {
+    width: 100px;
+    height: 100px;
+}
