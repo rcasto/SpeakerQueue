@@ -33,8 +33,10 @@
                 audioElem.addEventListener('ended', function () {
                     console.log('track ended');
                 });
-                audioElem.addEventListener('error', function () {
-                    console.log('An error occurred while playing');
+                audioElem.addEventListener('error', function (error) {
+                    scope.track.refresh = true;
+                    socketService.emit('select-song', scope.track);
+                    console.error(JSON.stringify(error));
                 });
                 audioElem.addEventListener('pause', function () {
                     console.log('track has been paused');

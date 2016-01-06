@@ -47,7 +47,18 @@
         });
         
         // Apply player message handlers
+        socket.on('play-song', function (track) {
+          
+        });
+        
         socket.on('select-song', function (track) {
+            if (track.refresh) {
+                console.log("Track refresh");
+                
+                track.refresh = false;
+                track.stream_location = null;
+                Player.setPlayStatus(false);
+            }
             if (!track.stream_location) {
                 Player.getTrackLocation(track).then(songSelected, onError);
             } else {
@@ -62,12 +73,13 @@
     });
     
     function songSelected(track) {
-        if (Player.isPlayingTrack()) {
+        if (Player.getPlayStatus()) {
             Player.addTrackToQueue(track);
-             io.to('speakerQueue').emit('add-song', track);
+            io.to('speakerQueue').emit('add-song', track);
         } else {
             Player.setCurrentTrack(track);
             io.to('speakerQueue').emit('play-song', track);
+            Player.setPlayStatus(true);
         }
     }
     

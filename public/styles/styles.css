@@ -22,6 +22,9 @@ body {
 
 .search-results {
 	background-color: green;
+    height: 480px;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 .search-result:hover {
 	background-color: orange;
@@ -36,8 +39,18 @@ body {
 }
 
 .track {
+    width: 80%;
+    margin: 0 auto;
 }
-.track img {
-    width: 100px;
-    height: 100px;
+
+@media (max-width: 767px) {
+    .track {
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px max-width: 768px) {
+    .track {
+        width: 100%;
+    }
 }
