@@ -11,7 +11,6 @@
     var Player = require('./lib/player');
     var api = require('./lib/api');
     var db = require('./lib/speakerDb');
-    var config = require('./config.json');
 
     // Initialize Express Server
     var app = express();
@@ -20,7 +19,9 @@
     app.use(bodyParser.json());
     
     // Initialize database connection
-    db.init();
+    db.init().then(function () {
+        console.log("Database connection established!");
+    }, onError);
 
     // setup static routes
     app.use(express.static(path.join(__dirname, '/node_modules')));

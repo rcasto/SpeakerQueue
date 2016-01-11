@@ -9,7 +9,7 @@
         $http = _$http_;
         socketService = _socketService_;
         
-        this.getRooms('default');
+        this.getRooms();
 	}
     
     roomService.prototype.joinRoom = function (roomName) {
@@ -17,8 +17,8 @@
     
     roomService.prototype.getRooms = function (roomName) {
         console.log('client is getting rooms');
-        if (!roomName) { roomName = "" };
-        return $http.get('/api/rooms/' + roomName).then(function (data) {
+       
+        return $http.get('/api/rooms/').then(function (data) {
             return data && data.data;
         }, function (err) {
             console.error(JSON.stringify(err));
