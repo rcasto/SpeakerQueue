@@ -25,11 +25,11 @@
                 socketService.on('queue-state', function (queueInfo) {
                     if (queueInfo.currentTrack) {
                         playSong(queueInfo.currentTrack);
-                    } 
+                    }
                 });
 
                 audioElem.addEventListener('playing', function () {
-                    console.log('playing playing');
+                    socketService.emit('play-song', scope.track);
                 });
                 audioElem.addEventListener('ended', function () {
                     console.log('track ended');
@@ -41,9 +41,10 @@
                 });
                 audioElem.addEventListener('pause', function () {
                     console.log('track has been paused');
+                    socketService.emit('play-song', scope.track);
                 });
-                audioElem.addEventListener('timeupdate', function () {
-                    console.log('track time has updated');
+                audioElem.addEventListener('timeupdate', function (event) {
+                    console.log('track time has updated', JSON.stringify(event));
                 });
                 audioElem.addEventListener('seeking', function () {
                     console.log('track seeking has started');

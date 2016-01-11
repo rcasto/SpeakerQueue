@@ -5,7 +5,9 @@
   "scripts": {
     "test": "node-debug server.js",
     "start": "node server.js",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules",
+    "prepareAzure": "",
+    "redactAzure": "git rm --cached .deployment config.json deploy.cmd"
   },
   "author": "Richie Casto",
   "license": "ISC",
@@ -14,6 +16,7 @@
     "angular-route": "^1.4.0",
     "body-parser": "^1.12.4",
     "bootstrap": "^3.3.4",
+    "documentdb": "^1.5.1",
     "express": "^4.12.4",
     "lie": "^2.9.1",
     "socketio": "^1.0.0"

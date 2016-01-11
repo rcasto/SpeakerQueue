@@ -2,11 +2,12 @@
     "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
-	var soundcloudService, socketService;
+	var soundcloudService, socketService, roomService;
 
-	function searchController(_soundcloudService_, _socketService_) {
+	function searchController(_soundcloudService_, _socketService_, _roomService_) {
 		soundcloudService = _soundcloudService_;
         socketService = _socketService_;
+        roomService = _roomService_;
 
 		this.query = "";
 		this.results = null;
@@ -27,5 +28,5 @@
 		}
 	};
 	
-	speakerQueue.controller('searchController', ['soundcloudService', 'socketService', searchController]);
+	speakerQueue.controller('searchController', ['soundcloudService', 'socketService', 'roomService', searchController]);
 }());

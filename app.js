@@ -7,13 +7,20 @@
     var socketIO = require('socket.io');
     var bodyParser = require('body-parser');
     
-    // bring in the player and its dependencies
+    // bring in the player and other dependencies
     var Player = require('./lib/player');
     var api = require('./lib/api');
+    var db = require('./lib/speakerDb');
+    var config = require('./config.json');
 
+    // Initialize Express Server
     var app = express();
 
+    // Configure Express server
     app.use(bodyParser.json());
+    
+    // Initialize database connection
+    db.init();
 
     // setup static routes
     app.use(express.static(path.join(__dirname, '/node_modules')));
@@ -48,7 +55,9 @@
         
         // Apply player message handlers
         socket.on('play-song', function (track) {
-          
+            if (!Player.isPlayingTrack() || !Player.compareTracks(Player.getCurrentTrack(), track)) {
+                playSong(track);
+            }
         });
         
         socket.on('select-song', function (track) {
@@ -72,21 +81,27 @@
         });
     });
     
+    // Private Utility functions
     function songSelected(track) {
-        if (Player.getPlayStatus()) {
+        if (Player.isPlayingTrack()) {
             Player.addTrackToQueue(track);
             io.to('speakerQueue').emit('add-song', track);
         } else {
-            Player.setCurrentTrack(track);
-            io.to('speakerQueue').emit('play-song', track);
-            Player.setPlayStatus(true);
+            playSong(track);
         }
+    }
+    
+    function playSong(track) {
+        Player.setCurrentTrack(track);
+        io.to('speakerQueue').emit('play-song', track);
+        Player.setPlayStatus(!Player.isPlayingTrack());
     }
     
     function onError(err) {
         console.error(JSON.stringify(err));
     }
 
+    // Public properties
     module.exports = {
         server: server,
         io: io
