@@ -15,14 +15,14 @@
                 var audioElem = audio[0];
                 
                 function playSong(track) {
-                    console.log('Now playing', track.title, 'by', track.artist);
+                    console.log(`Now playing, ${track.title}, by, ${track.artist}`);
                     
                     scope.track = track;
                     audioElem.src = track.stream_location;
                 }
                 
                 socketService.on('play-song', playSong);
-                socketService.on('queue-state', function (queueInfo) {
+                socketService.on('room-state', function (queueInfo) {
                     if (queueInfo.currentTrack) {
                         playSong(queueInfo.currentTrack);
                     }

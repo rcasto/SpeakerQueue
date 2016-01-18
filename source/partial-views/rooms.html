@@ -1,0 +1,8 @@
+<div ng-if="rooms">
+    <p>There {{ rooms.length === 1 ? 'is' : 'are' }} {{ rooms.length }} {{ rooms.length === 1 ? 'room' : 'rooms' }}.</p>
+    <p ng-repeat="room in rooms track by room.id">{{ room.id }}</p>
+</div>
+
+<div ng-if="err">
+    ERROR: {{ JSON.stringify(err) }}
+</div>

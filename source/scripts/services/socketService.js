@@ -30,15 +30,15 @@
     };
 
     socketService.prototype.connect = function () {
-        return this.getConnectionString().then(function (connectionString) {
+        return this.getConnectionString().then(connectionString => {
             this.socket = io.connect(connectionString);
             // Initialize events registered before connection
-            this.initBuffer.forEach(function (eventInfo) {
+            this.initBuffer.forEach(eventInfo => {
                 this.on(eventInfo.event, eventInfo.cb);
-            }.bind(this));
+            });
             this.initBuffer = [];
             return true;
-        }.bind(this), function (err) {
+        }, function (err) {
             console.error(err);
             return false;
         });
@@ -48,10 +48,10 @@
         if (this.connectionString) {
             return $q.resolve(this.connectionString)
         }
-        return $http.get('/api/connect/').then(function (data) {
+        return $http.get('/api/connect/').then(data => {
             this.connectionString = data && data.data && data.data.connectionString;
             return this.connectionString;
-        }.bind(this), function (err) {
+        }, function (err) {
             console.error(JSON.stringify(err));
             return null;
         });
