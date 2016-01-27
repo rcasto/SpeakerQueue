@@ -22,7 +22,7 @@ git clone https://github.com/rcasto/SpeakerQueue/ <path-to-store>
 <br/><br/>
 Navigate to the SpeakerQueue repo directory and then run to the following command:
 ```
-npm init
+npm install
 ```
 This will install all the necessary dependencies for SpeakerQueue to run
 ```
