@@ -11,10 +11,8 @@
         this.queue = [];
 
         socketService.on('room-state', roomInfo => {
-            this.updateQueue(roomInfo.player.track);
+            this.updateQueue(roomInfo.queue);
         });
-        socketService.on('add-song', track => this.addTrack(track));
-        socketService.on('remove-song', track => this.removeTrack(track));
 	}
 
     queueController.prototype.addTrack = function (track) {

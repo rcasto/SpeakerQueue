@@ -34,7 +34,7 @@
             this.socket = io.connect(connectionString);
             // Initialize events registered before connection
             this.initBuffer.forEach(eventInfo => {
-                this.on(eventInfo.event, eventInfo.cb);
+                eventInfo.action(eventInfo.event, eventInfo.data);
             });
             this.initBuffer = [];
             return true;
@@ -62,7 +62,15 @@
     };
 
     socketService.prototype.emit = function (event, data) {
-        this.socket.emit(event, data);
+        if (this.socket) {
+            this.socket.emit(event, data);   
+        } else {
+            this.initBuffer.push({
+                'event': event,
+                'data': data,
+                'action': this.emit.bind(this)
+            });
+        }
     };
 
     socketService.prototype.on = function (event, cb) {
@@ -76,7 +84,8 @@
         } else {
             this.initBuffer.push({
                 'event': event,
-                'cb': cb
+                'data': cb,
+                'action': this.on.bind(this)
             });
         }
     };

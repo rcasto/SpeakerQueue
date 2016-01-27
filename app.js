@@ -7,12 +7,10 @@
     var socketIO = require('socket.io');
     var bodyParser = require('body-parser');
     
-    var DEFAULT_ROOM = 'default';
-    
     // bring in the player and other dependencies
-    var Player = require('./lib/player');
     var api = require('./lib/api');
     var db = require('./lib/speakerDb');
+    var roomHandler = require('./lib/roomHandler');
 
     // Initialize Express Server
     var app = express();
@@ -45,35 +43,19 @@
         console.log('Client Connected!');
         
         // Apply player message handlers
-        socket.on('play-song', function (track) {
-            if (!Player.isPlayingTrack() || !Player.compareTracks(Player.getCurrentTrack(), track)) {
-                playSong(track);
-            }
-        });
+        socket.on('play-song', roomHandler.playTrack.bind(this, socket));
+        socket.on('add-song', roomHandler.addTrack.bind(this, socket));
+        socket.on('refresh', roomHandler.refreshTrack.bind(this, socket));
+        socket.on('time-update', roomHandler.updateTrackTime.bind(this, socket));
         
-        socket.on('select-song', function (track) {
-            if (track.refresh) {
-                console.log("Track refresh");
-                
-                track.refresh = false;
-                track.stream_location = null;
-                Player.setPlayStatus(false);
-            }
-            if (!track.stream_location) {
-                Player.getTrackLocation(track).then(songSelected.bind(null, socket), onError);
-            } else {
-                songSelected(socket, track);
-            }
-        });
-        
-        socket.on('join-room', function (room) {
-            socket.join(room, function (err) {
+        socket.on('join-room', function (roomName) {
+            socket.join(roomName, function (err) {
                 if (err) {
                     return console.error('Failed to join room', JSON.stringify(err)); 
                 }
-                console.log('Client joined the ' + room + ' room');
+                console.log('Client joined the ' + roomName + ' room');
                 // Fetch state of default speaker room
-                db.getRooms(room).then(function (room) {
+                db.getOrCreateRoom(roomName).then(function (room) {
                     console.log('Send ', room, ' room-state to client');
                     socket.emit('room-state', room);
                 }, onError);
@@ -85,34 +67,6 @@
             console.log('Client has disconnected');
         });
     });
-    
-    // Private Utility functions
-    function songSelected(socket, track) {
-        // Will have to fetch room state and then make these checks
-        if (Player.isPlayingTrack()) {
-            Player.addTrackToQueue(track);
-            io.to(getSocketRoom(socket)).emit('add-song', track);
-        } else {
-            playSong(socket, track);
-        }
-    }
-    
-    function playSong(socket, track) {
-        Player.setCurrentTrack(track);
-        io.to(getSocketRoom(socket)).emit('play-song', track);
-        Player.setPlayStatus(!Player.isPlayingTrack());
-    }
-    
-    // Assume people are only in room at a time
-    function getSocketRoom(socket) {
-        if (socket && socket.rooms) {
-            var rooms = Object.keys(socket.rooms);
-            if (rooms.length >= 2) {
-                return rooms[1];   
-            }
-        }
-        return null;
-    }
     
     function onError(err) {
         console.error(JSON.stringify(err));

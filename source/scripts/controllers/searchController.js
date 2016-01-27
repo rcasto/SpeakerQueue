@@ -2,10 +2,11 @@
     "use strict";
 
 	var speakerQueue = angular.module('speakerQueue');
-	var soundcloudService, socketService;
+	var soundcloudService, socketService, roomService;
 
-	function searchController(_soundcloudService_, _socketService_) {
+	function searchController(_soundcloudService_, _socketService_, _roomService_) {
 		soundcloudService = _soundcloudService_;
+        roomService = _roomService_;
         socketService = _socketService_;
 
 		this.query = "";
@@ -13,7 +14,15 @@
 	}
 
 	searchController.prototype.selectTrack = function (track) {
-        socketService.emit('select-song', track);
+        var room = roomService.getCurrentRoom();
+        // There is the possiblity that the latest information from the server has not been received
+        // There may exist a race condition among clients sending these messages
+        // The last one is the winner
+        if (room.player.track) {
+            socketService.emit('add-song', track);
+        } else {
+            socketService.emit('play-song', track);
+        }
 		this.results = null;
 	};
 
@@ -27,5 +36,5 @@
 		}
 	};
 	
-	speakerQueue.controller('searchController', ['soundcloudService', 'socketService', searchController]);
+	speakerQueue.controller('searchController', ['soundcloudService', 'socketService', 'roomService', searchController]);
 }());

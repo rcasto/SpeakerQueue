@@ -10,8 +10,7 @@
         socketService = _socketService_;
         
         this.currentRoom = null;
-        
-        // This is an ack from the server to confirm the room was joined
+
         socketService.on('room-state', room => {
             this.currentRoom = room;
         });

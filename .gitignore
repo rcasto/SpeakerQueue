@@ -5,3 +5,4 @@ config.json
 .deployment
 deploy.cmd
 dist
+.vscode
